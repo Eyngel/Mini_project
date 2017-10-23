@@ -1,0 +1,227 @@
+#include <iostream>
+#include "spaceship.h"
+#include <string>
+
+using namespace std;
+
+//draw io
+
+int main()
+{
+    int a1, a2, a3;
+    string a4, a5, a6;
+    int b1, b2;
+    bool b3;
+    cout<<"Introduce the type of spaceship:\n1-space station\n2-destroyer\n3-carrier\n4-fighter\n(Only carriers available at this moment)"<<endl;
+    cin>>a1;
+    cout<<"Introduce the number of members of the crew"<<endl;
+    cin>>a2;
+    cout<<"Introduce the price of the spaceship"<<endl;
+    cin>>a3;
+    cout<<"Write down the type of propulsion:\nwrap_drive, trace_compressor, ftl_engine, solar_sails or ion_engine"<<endl;
+    cin>>a4;
+    cout<<"Introduce introduce the name of the owner:\n(format NNNNNNNX, being N a number and X a leter or number)"<<endl;
+    cin>>a5;
+    cout<<"Introduce introduce the number of the spaceship:\n(format LNNNNLLL, being N a number and L a leter)"<<endl;
+    cin>>a6;
+    cout<<"Introduce the cruise velocity of the spaceship"<<endl;
+    cin>>b1;
+    cout<<"Introduce the maximun load of the spaceship"<<endl;
+    cin>>b2;
+    cout<<"You want shields in your spaceship?(1-Yes/0-No)"<<endl;
+    cin>>b3;
+
+    carrier s1(a1, a2, a3, a4, a5, a6, b1, b2, b3);
+    cout<<s1.type<<endl;
+    cout<<s1.crew<<endl;
+    cout<<s1.price<<endl;
+    cout<<s1.propulsion<<endl;
+    cout<<s1.owner_sp<<endl;
+    cout<<s1.number_sp<<endl;
+    cout<<s1.cr_speed<<endl;
+    cout<<s1.load<<endl;
+    cout<<s1.shield_ca<<endl;
+
+    }
+
+//////////////////////////////////////////////////////////////7
+
+
+#include "owner.h"
+#include <iostream>
+#include <cstring>
+#include <string>
+
+using namespace std;
+
+owner::owner(bool al, string pl)
+{
+    alien=al;
+    planet=pl;
+}
+
+human::human(bool al, string pl,string n_h):owner(al, pl){
+    name_h=n_h;
+}
+
+extraterrestrial::extraterrestrial(bool al, string pl, string n_e):owner(al, pl){
+    name_e=n_e;
+}
+
+//////////////////////////////////////////////////////////
+
+
+#include "spaceship.h"
+#include <iostream>
+#include <cstring>
+#include <string>
+
+using namespace std;
+
+spaceship::spaceship(int t, int c, int p, string pro, string own, string num)
+{
+    type=t;
+    crew=c;
+    price=p;
+    propulsion=pro;
+    owner_sp=own;
+    number_sp=num;
+
+}
+
+space_station::space_station(int t, int c, int p, string pro, string own, string num, int max_p, int ha, bool sh):spaceship( t, c, p, pro, own, num)
+{
+    max_pass=max_p;
+    shield_ss=sh;
+    hangars=ha;
+}
+
+destroyer::destroyer(int t, int c, int p, string pro, string own, string num, string we):spaceship( t, c, p, pro, own, num)
+{
+   weapon_de=we;
+
+}
+
+carrier::carrier(int t, int c, int p, string pro, string own, string num, int cr_s, int lo, bool sh):spaceship( t, c, p, pro, own, num)
+{
+    cr_speed=cr_s;
+    load=lo;
+    shield_ca=sh;
+}
+
+fighter::fighter(int t, int c, int p, string pro, string own, string num, int max_s, string w):spaceship( t, c, p, pro, own, num)
+{
+    max_speed=max_s;
+    weapon_fi=w;
+}
+
+////////////////////////////////////////////////////7
+
+#ifndef OWNER_H
+#define OWNER_H
+#include <iostream>
+using namespace std;
+
+class owner
+{
+public:
+    string planet;
+    bool alien;
+    owner(bool, string);
+
+    void enter_ow();
+    void modify_ow();
+    void remove_ow();
+    void show_ow();
+
+};
+
+class human : public owner{
+    //can not buy destroyers
+public:
+    string name_h;
+    human(bool, string, string);
+
+    void buy_h();
+
+};
+
+class extraterrestrial: public owner{
+    //can not buy space stations
+public:
+    string name_e;
+    extraterrestrial(bool, string, string);
+
+    void buy_e();
+
+};
+#endif // OWNER_H
+
+//////////////////////////////////////////////////////
+
+
+#ifndef SPACESHIP_H
+#define SPACESHIP_H
+
+#include <iostream>
+#include <string>
+#include <cstring>
+#include <string.h>
+
+using namespace std;
+
+class spaceship
+{
+private:
+int i, j, k;
+public:
+    string propulsion;
+    string owner_sp, number_sp;
+    int type, crew, price;
+    spaceship(int, int, int, string, string, string);
+
+    void enter_sp();
+    void modify_sp();
+    void remove_sp();
+    void show_sp();
+    void search();
+
+    };
+
+class space_station : public spaceship
+{
+public:
+    int max_pass,hangars;
+    bool shield_ss;
+    space_station(int, int, int, string, string, string, int, int, bool);
+
+};
+
+class destroyer : public spaceship
+{
+public:
+    string weapon_de;
+    destroyer(int, int, int, string, string, string, string);
+
+};
+
+class carrier : public spaceship
+{
+public:
+    int cr_speed, load;
+    bool shield_ca;
+    carrier(int, int, int, string, string, string, int, int, bool);
+
+};
+
+class fighter : public spaceship
+{
+public:
+    //crew=1;
+    int max_speed;
+    string weapon_fi;
+    fighter(int, int, int, string, string, string, int, string);
+
+};
+
+#endif SPACESHIP_H
